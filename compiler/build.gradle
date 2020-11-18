@@ -26,6 +26,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    task makeJar(type: Copy) {
+        //排除在外的文件
+//        exclude('BuildConfig.class', 'R.class', 'MainActivity.java')
+        //删除存在的
+        delete 'build/libs/uart.jar'
+        //设置拷贝的文件
+        from('build/intermediates/packaged-classes/debug/')
+        //打进jar包后的文件目录
+        into('build/libs/')
+        //将classes.jar放入build/libs/目录下
+        //include ,exclude参数来设置过滤
+        //（我们只关心classes.jar这个文件）
+        include('classes.jar')
+        //重命名
+        rename('classes.jar', 'modbus.jar')
+    }
 }
 
 dependencies {
@@ -36,5 +53,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    api 'com.github.licheedev:Modbus4Android:2.0.2'
+    api 'com.github.licheedev:modbus4j:v3.0.6-alpha1'
+    api 'com.github.licheedev:Android-SerialPort-API:2.0.0'
+    api 'io.reactivex.rxjava2:rxjava:2.2.7'
+    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.2'
 }
